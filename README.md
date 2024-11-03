@@ -27,7 +27,7 @@ EcommerceBackend/
 │   └── EbayService.cs
 │
 ├── Hubs/
-│   └── RealTimeHub.cs  //
+│   └── RealTimeHub.cs 
 │
 ├── Config/
 │   └── AppConfig.cs

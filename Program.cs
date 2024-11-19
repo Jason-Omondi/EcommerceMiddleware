@@ -6,7 +6,6 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -16,7 +15,7 @@ builder.Services.AddDbContext<EcommerceDbContext>(options =>
 // Identity setup
 builder.Services.AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<EcommerceDbContext>()
-    .AddDefaultTokenProviders(); // Uncomment this line if you need token providers
+    .AddDefaultTokenProviders();
 
 // Configure JWT Authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -61,10 +60,10 @@ var app = builder.Build();
 
 // Middleware setup
 app.UseHttpsRedirection();
-app.UseRouting(); // This line is essential for routing to work
+app.UseRouting();
 app.UseAuthentication();
-app.UseAuthorization(); // Add authorization if you plan to secure endpoints
+app.UseAuthorization(); 
 
-app.MapControllers(); // Ensure this is present to map attribute routes
+app.MapControllers(); //map attribute routes
 
 app.Run();

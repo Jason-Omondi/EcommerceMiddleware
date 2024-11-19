@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using static EcommerceMiddleware.Models.PaymentModel;
 
-//public class EcommerceDbContext : DbContext
 public class EcommerceDbContext : IdentityDbContext<User>
 {
 
@@ -21,6 +20,12 @@ public class EcommerceDbContext : IdentityDbContext<User>
             .Property(o => o.Price)
             .HasColumnType("decimal(18, 2)");
 
+        modelBuilder.Entity<OrderItem>()
+       .HasOne(oi => oi.Product)           // Configuring the Product relationship
+       .WithMany()                          // If Product has a collection of OrderItems, use WithMany(p => p.OrderItems)
+       .HasForeignKey(oi => oi.ProductId)
+       .OnDelete(DeleteBehavior.Cascade);
+
         modelBuilder.Entity<Payment>()
             .Property(p => p.Amount)
             .HasColumnType("decimal(18, 2)");
@@ -33,10 +38,19 @@ public class EcommerceDbContext : IdentityDbContext<User>
             .Property(p => p.Price)
             .HasColumnType("decimal(18, 2)");
 
-        // Optionally add configurations for the new properties if needed
+        modelBuilder.Entity<ConditionPrice>()
+           .Property(cp => cp.Price)
+           .HasColumnType("decimal(18, 2)");
+
         modelBuilder.Entity<Product>()
             .Property(p => p.Rating)
-            .HasColumnType("float"); // Or use decimal if preferred
+            .HasColumnType("float");
+
+        modelBuilder.Entity<SourceData>().Ignore(sd => sd.ExtraFields);
+
+        modelBuilder.Entity<ConditionPrice>().HasNoKey();
+        modelBuilder.Entity<SourceData>().HasNoKey();
+
 
         base.OnModelCreating(modelBuilder);
     }
